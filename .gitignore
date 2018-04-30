@@ -1,0 +1,5 @@
+**/*.pyc
+coverage
+savegame*
+.coverage
+.pytest_cache
