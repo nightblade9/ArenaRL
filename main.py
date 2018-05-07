@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from random import Random
 from datetime import datetime
+import importlib
 
 from tcod import image_load
 
@@ -43,7 +44,9 @@ def new_game():
 
         # generate map (at this point it's not drawn to the screen)
         generator_class_name = f'{str(config.data.mapType).lower().capitalize()}Generator'
-        generator = getattr(generators, generator_class_name)
+        module_name = 'model.maps.generators.{}_generator'.format(config.data.mapType).lower()
+        module = importlib.import_module(module_name)
+        generator = getattr(module, generator_class_name)
         generator(Game.instance.area_map).generate()
 
         Game.instance.floors.append(Game.instance.area_map)
