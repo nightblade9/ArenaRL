@@ -80,7 +80,7 @@ class MapRenderer:
         self._ui_adapter.panel.clear(fg=colors.white, bg=colors.black)
 
         # print the game messages, one line at a time
-        y = 1
+        y = 0
         for (line, color) in Game.instance.game_messages:
             self._ui_adapter.panel.draw_str(MSG_X, y, line, fg=color)
             y += 1
