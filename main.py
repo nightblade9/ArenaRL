@@ -53,6 +53,7 @@ def new_game():
     Game.instance.event_bus = Game.instance.event_busses[Game.instance.current_floor-1]
 
     Game.instance.area_map.place_on_random_ground(Game.instance.player)
+    
     if config.data.stallion.enabled:
         Game.instance.area_map.place_around(Game.instance.stallion, Game.instance.player.x, Game.instance.player.y)
 
