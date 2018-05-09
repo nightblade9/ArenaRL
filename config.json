@@ -4,6 +4,7 @@
     "mapType": "arena",  // "forest" or "dungeon"
     "numFloors": 5,
     "features": {
+        "seeAllTiles": true,
         "swordStuns": true,
         "stunsStack": true,
         "hammerKnocksBack": true,
@@ -11,7 +12,6 @@
         "bowCrits": true,
         "bowCritsStack": true,
         "limitedArrows": true,
-        "seeAllTiles": false,
         "horseIsMountable": true
     },
     "player": {

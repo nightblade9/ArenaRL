@@ -117,7 +117,7 @@ def main_menu():
         img.blit_2x(Game.instance.ui.root, 0, 0)
 
         # show the game's title, and some credits!
-        title = 'FURUSIYA'
+        title = 'ROGUELIKE PROTOTYPE'
         center = (SCREEN_WIDTH - len(title)) // 2
         Game.instance.ui.draw_root(center, SCREEN_HEIGHT // 2 - 4, title, colors.light_yellow)
 
