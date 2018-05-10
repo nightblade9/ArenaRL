@@ -29,6 +29,7 @@ def generate_monsters(area_map, num_monsters):
 
         monster = monster_factory.create_monster(data, x, y, colour, name, cls)
         area_map.entities.append(monster)
+        print("Returning {}".format(monster))
 
 
 def generate_items(area_map, num_items):
