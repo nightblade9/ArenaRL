@@ -5,6 +5,7 @@
     "numFloors": 5,
     "features": {
         "seeAllTiles": true,
+        "omniSight": true,
         "swordStuns": true,
         "stunsStack": true,
         "hammerKnocksBack": true,
@@ -24,7 +25,7 @@
 
         "expRequiredBase": 10, // formula: 2^(n+1) * this
         "startingWeapon": "Spear",
-        "lightRadius": 10,
+        "lightRadius": 5,
         "statsPointsOnLevelUp": 5,
         "startingArrows": 10,
         "stallionFollowDistance": 3

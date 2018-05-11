@@ -47,6 +47,9 @@ class MapRenderer:
                 Game.instance.area_map.is_on_map
             )
 
+            if config.data.features.omniSight:
+                self.visible_tiles = [(x, y) for x in range(Game.instance.area_map.width) for y in range(Game.instance.area_map.height)]
+
             for (x, y) in self.visible_tiles:
                 Game.instance.area_map.tiles[x][y].is_explored = True
 
