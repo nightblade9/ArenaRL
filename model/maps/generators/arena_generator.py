@@ -56,6 +56,5 @@ class ArenaGenerator:
     def make_barrel(self, x, y):
         data = AttrDict({ "health": 1, "defense": 0, "attack": 0, "xp": 0})
         barrel = monster_factory.create_monster(data, x, y, colors.brass, "0", GameObject)
-        print("B at {}, {}".format(barrel.x, barrel.y))
         Game.instance.ai_system.set(barrel, None)
         self._area_map.entities.append(barrel)

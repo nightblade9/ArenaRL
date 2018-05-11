@@ -2,6 +2,7 @@
 from random import Random
 from datetime import datetime
 import importlib
+import random
 
 from tcod import image_load
 
@@ -55,7 +56,9 @@ def new_game():
     Game.instance.area_map = Game.instance.floors[Game.instance.current_floor-1]
     Game.instance.event_bus = Game.instance.event_busses[Game.instance.current_floor-1]
 
-    Game.instance.area_map.place_on_random_ground(Game.instance.player)
+    #Game.instance.area_map.place_on_random_ground(Game.instance.player)
+    Game.instance.player.y = int(Game.instance.area_map.height / 2)
+    Game.instance.player.x = 5 if random.choice(['left', 'right']) == 'left' else Game.instance.area_map.width - 5
     
     if config.data.stallion.enabled:
         Game.instance.area_map.place_around(Game.instance.stallion, Game.instance.player.x, Game.instance.player.y)
