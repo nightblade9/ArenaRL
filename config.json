@@ -24,7 +24,7 @@
         "skillPointsPerTurn": 2,
 
         "expRequiredBase": 10, // formula: 2^(n+1) * this
-        "startingWeapon": "Spear",
+        "startingWeapon": "Sword",
         "lightRadius": 5,
         "statsPointsOnLevelUp": 5,
         "startingArrows": 10,

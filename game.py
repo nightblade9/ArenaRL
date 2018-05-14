@@ -35,8 +35,8 @@ class Game:
         self.stallion = None
 
         self.random = random.Random()
-        self.floors = []
-        self.event_busses = []
-        self.current_floor = 1
+        self.floor = None
+        self.event_bus = None
+        self.current_floor = 1 # TODO: delete
 
         self.event_bus = EventBus()

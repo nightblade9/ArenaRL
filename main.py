@@ -19,6 +19,7 @@ from model.entities.party.player import Player
 from model.entities.party.stallion import Stallion
 from model.event.event_bus import EventBus
 from model.key_binder import KeyBinder
+from model.keys import update_manager
 from model.maps import generators
 from model.maps.area_map import AreaMap
 from model.maps.generators import ForestGenerator
@@ -39,22 +40,13 @@ def new_game():
     if config.data.stallion.enabled:
         Game.instance.stallion = Stallion(Game.instance.player)
 
-    for i in range(1, config.data.numFloors + 1):
-        Game.instance.area_map = AreaMap(MAP_WIDTH, MAP_HEIGHT, i)
-        Game.instance.event_bus = EventBus()
+    Game.instance.area_map = AreaMap(MAP_WIDTH, MAP_HEIGHT, 1)
+    Game.instance.event_bus = EventBus()
 
-        # generate map (at this point it's not drawn to the screen)
-        generator_class_name = f'{str(config.data.mapType).lower().capitalize()}Generator'
-        module_name = 'model.maps.generators.{}_generator'.format(config.data.mapType).lower()
-        module = importlib.import_module(module_name)
-        generator = getattr(module, generator_class_name)
-        generator(Game.instance.area_map).generate()
+    update_manager.generate_floor()
 
-        Game.instance.floors.append(Game.instance.area_map)
-        Game.instance.event_busses.append(Game.instance.event_bus)
-
-    Game.instance.area_map = Game.instance.floors[Game.instance.current_floor-1]
-    Game.instance.event_bus = Game.instance.event_busses[Game.instance.current_floor-1]
+    Game.instance.floor = Game.instance.area_map
+    Game.instance.event_bus = Game.instance.event_bus
 
     #Game.instance.area_map.place_on_random_ground(Game.instance.player)
     Game.instance.player.y = int(Game.instance.area_map.height / 2)

@@ -1,4 +1,8 @@
+from game import Game
+import importlib
 from model.config import config
+from model.event.event_bus import EventBus
+from model.keys import update_manager
 
 class UpdateManager:
     def __init__(self, game):
@@ -25,31 +29,19 @@ class UpdateManager:
 
     def base_update(self):
         if self.game.renderer.recompute_fov:
-            if (self.game.player.x, self.game.player.y) == self.game.area_map.next_floor_stairs:
-                self.next_floor()
-            elif (self.game.player.x, self.game.player.y) == self.game.area_map.previous_floor_stairs:
-                self.previous_floor()
+            if (
+                ((self.game.player.x, self.game.player.y) == self.game.area_map.next_floor_stairs) or
+                ((self.game.player.x, self.game.player.y) == self.game.area_map.previous_floor_stairs)
+            ):
+                self.switch_floor()
         self.game.renderer.render()
 
-    def next_floor(self):
-        self.game.current_floor += 1
-        self.load_next_floors_objects()
-        self.place_player_in_floor(self.game.area_map.previous_floor_stairs)
-        self.refresh_renderer()
-
-    def previous_floor(self):
-        self.game.current_floor -= 1
-        self.load_next_floors_objects()
+    def switch_floor(self):
+        self.game.area_map.entities = []        
+        update_manager.generate_floor()
+        self.game.event_bus = EventBus()        
         self.place_player_in_floor(self.game.area_map.next_floor_stairs)
         self.refresh_renderer()
-
-    def load_next_floors_objects(self):
-        self.game.area_map.entities.remove(self.game.player)
-        if config.data.stallion.enabled:
-            self.game.area_map.entities.remove(self.game.stallion)
-
-        self.game.area_map = self.game.floors[self.game.current_floor - 1]
-        self.game.event_bus = self.game.event_busses[self.game.current_floor - 1]
 
     def place_player_in_floor(self, tile_to_spawn_player_around):
         self.game.area_map.place_around(self.game.player, *tile_to_spawn_player_around)
@@ -63,3 +55,11 @@ class UpdateManager:
     def refresh_renderer(self):
         self.game.renderer.reset()
         self.game.renderer.refresh_all()
+
+def generate_floor():
+    # generate map (at this point it's not drawn to the screen)
+    generator_class_name = f'{str(config.data.mapType).lower().capitalize()}Generator'
+    module_name = 'model.maps.generators.{}_generator'.format(config.data.mapType).lower()
+    module = importlib.import_module(module_name)
+    generator = getattr(module, generator_class_name)
+    generator(Game.instance.area_map).generate()
