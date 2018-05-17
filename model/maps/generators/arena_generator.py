@@ -6,6 +6,7 @@ from model.rect import Rect
 from model.maps.generators import map_generator
 from model.factories import monster_factory
 from model.entities.game_object import GameObject
+import random
 
 class ArenaGenerator:
     """
@@ -13,7 +14,8 @@ class ArenaGenerator:
     placed on either the LHS or RHS in the center.
     """
 
-    NUM_MONSTERS = (5, 10)
+    CLUSTER_SIZE = (5, 7)
+    NUM_CLUSTERS = (1, 2) # 1-2 clusters of 5-7 monsters
 
     def __init__(self, area_map):
         self._area_map = area_map
@@ -48,12 +50,56 @@ class ArenaGenerator:
             center_pillar_y = int(self._area_map.height / 2)
             for x in range(center_pillar_x - 1, center_pillar_x + 2):
                 for y in range(center_pillar_y - 1, center_pillar_y + 2):
-                    self.make_barrel(x, y)
+                    self._make_barrel(x, y)
+        
+        self._generate_monsters()
 
-        # map_generator.generate_monsters(self._area_map
-        # , Game.instance.random.randint(*ArenaGenerator.NUM_MONSTERS))
+    def _generate_monsters(self):
+        # Monster generation is complicated. To keep it simple, we have a pool of generic monsters,
+        # we pick two of those each round, and up their stats to be appropriate for the current floor.
+        # We also generate a boss, which is a different randomly-picked monster, tanked up to 10x.
+        
+        # Well, technically, we just need names. They're functionally all the same.
+        monster_names = ["slime", "locust", "giant", "wolf", "anaconda", "venomspider", "dragon", "thief", "hippogryph"]
+        monster_colours = [colors.red, colors.blue, colors.green, colors.yellow, colors.orange, colors.purple, colors.pink]
 
-    def make_barrel(self, x, y):
+        num_clusters = Game.instance.random.randint(*ArenaGenerator.NUM_CLUSTERS)
+        monsters = random.sample(monster_names, num_clusters + 1) # +1 = boss
+        colours = random.sample(monster_colours, num_clusters + 1)
+        
+        for cluster_number in range(num_clusters):
+
+            num_monsters = Game.instance.random.randint(*ArenaGenerator.CLUSTER_SIZE)
+            monster_name = monsters.pop()
+            colour = colours.pop()
+            difficulty = (cluster_number + 1) * self._area_map.floor_num
+            
+            attack = random.randint(difficulty * 2, difficulty * 5)
+            defense = random.randint(difficulty, difficulty * 7)
+            health = random.randint(12 * difficulty, 45 * difficulty)
+            print(f"Creating {num_monsters} {monster_name}: a={attack}, d={defense}, hp={health})")
+
+            for j in range(num_monsters):
+                self._create_monster(monster_name, colour, attack, defense, health)
+            
+        # Boss is always someone to kill, so he should have very narrowly-ranged stats
+        # TODO: what if he spawns next to you? Erm, well, you die, I guess.
+        self._create_monster(monsters.pop().capitalize(), colours.pop(), difficulty * 6, difficulty * 4, difficulty * 100)
+
+    def _create_monster(self, monster_name, colour, attack, defense, health):
+        data = AttrDict({ 
+            "attack": attack,
+            "defense": defense,
+            "health": health,
+            "xp": (attack + defense) * health
+        })
+
+        x, y = self._area_map.get_random_walkable_tile() # TODO: place away from player's side? Nah.
+        monster = monster_factory.create_monster(data, x, y, colour, monster_name)
+        self._area_map.entities.append(monster)
+        
+
+    def _make_barrel(self, x, y):
         data = AttrDict({ "health": 1, "defense": 0, "attack": 0, "xp": 0})
         barrel = monster_factory.create_monster(data, x, y, colors.brass, "0", GameObject)
         Game.instance.ai_system.set(barrel, None)
