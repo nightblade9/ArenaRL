@@ -70,14 +70,13 @@ class ArenaGenerator:
             Element.LIGHTNING: colors.yellow,
             Element.EARTH: colors.green
         }
-        
+
         elements = [e for e in elemental_colours]
         random.shuffle(elements)
 
         num_clusters = Game.instance.random.randint(*ArenaGenerator.NUM_CLUSTERS)
         monsters = random.sample(monster_names, num_clusters + 1) # +1 = boss
         colours = random.sample(monster_colours, num_clusters + 1)
-        print(colours)
 
         for cluster_number in range(num_clusters):
 
@@ -115,7 +114,6 @@ class ArenaGenerator:
         final_colour = elemental_colours[element] if element is not None else colour
         final_name = f"{element} {monster_name}" if element is not None else monster_name
         monster = monster_factory.create_monster(data, x, y, final_colour, final_name, character=monster_name[0])
-        print(f"Created a {final_name}")
         monster.elemental = element
         self._area_map.entities.append(monster)        
 
