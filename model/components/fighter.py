@@ -1,10 +1,10 @@
 import colors
+import elements
 from model.config import config
 from model.components.base import Component
 from model.factories import item_factory
 from game import Game
 from model.helper_functions.message import message
-
 
 class Fighter(Component):
     """
@@ -40,6 +40,9 @@ class Fighter(Component):
         damage = self.calculate_damage(damage_multiplier, target_fighter)
 
         msg = f'{self.owner.name.capitalize()} attacks {target.name}'
+
+        damage = elements.apply_elemental_damage(self, target, damage)
+        
         if damage > 0:
             # make the target take some damage
             msg += f' for {damage} hit points.' + (' Critical strike!' if is_critical else '')

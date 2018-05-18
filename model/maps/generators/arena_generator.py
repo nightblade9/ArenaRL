@@ -1,5 +1,6 @@
 from attrdict import AttrDict
 import colors
+from elements import Element
 from game import Game
 import math
 from model.rect import Rect
@@ -63,7 +64,13 @@ class ArenaGenerator:
         monster_names = ["slime", "locust", "giant", "wolf", "anaconda", "venomspider", "dragon", "thief", "hippogryph"]
         # generic colours for non-element beasties.
         monster_colours = [colors.orange, colors.purple, colors.violet, colors.pink, colors.magenta, colors.amber]
-        elemental_colours = { "fire": colors.red, "ice": colors.blue, "lightning": colors.yellow, "earth": colors.green }
+        elemental_colours = {
+            Element.FIRE: colors.red,
+            Element.ICE: colors.blue,
+            Element.LIGHTNING: colors.yellow,
+            Element.EARTH: colors.green
+        }
+        
         elements = [e for e in elemental_colours]
         random.shuffle(elements)
 

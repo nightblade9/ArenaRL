@@ -8,7 +8,7 @@ from game import Game
 from model.components.fighter import Fighter
 from model.entities.game_object import GameObject
 from model.key_binder import add_skill
-
+from elements import Element
 
 class Player(GameObject):
     def __init__(self):
@@ -25,7 +25,7 @@ class Player(GameObject):
                 hp=data.startingHealth,
                 defense=data.startingDefense,
                 damage=data.startingDamage,
-                weapon=weapon_init(self),
+                weapon=weapon_init(self, Element.FIRE),
                 death_function=player_death
             )
         )
