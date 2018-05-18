@@ -7,8 +7,11 @@ from model.components.xp import XPComponent
 from model.entities.game_object import GameObject
 
 
-def create_monster(data, x, y, colour, name, cls=GameObject):
-    monster = cls(x, y, name[0], name, colour, blocks=True)
+def create_monster(data, x, y, colour, name, character=None, cls=GameObject):
+    if character is None:
+        character = name[0]
+        
+    monster = cls(x, y, character, name, colour, blocks=True)
     Game.instance.fighter_system.set(
         monster, Fighter(
             owner=monster,

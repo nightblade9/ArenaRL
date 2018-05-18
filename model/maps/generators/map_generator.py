@@ -27,9 +27,8 @@ def generate_monsters(area_map, num_monsters):
         x, y = area_map.get_random_walkable_tile()
         name, data, colour, cls = Game.instance.random.choices(enemies, weights=probabilities)[0]
 
-        monster = monster_factory.create_monster(data, x, y, colour, name, cls)
+        monster = monster_factory.create_monster(data, x, y, colour, name, cls=cls)
         area_map.entities.append(monster)
-        print("Returning {}".format(monster))
 
 
 def generate_items(area_map, num_items):

@@ -218,3 +218,6 @@ silver = (203, 203, 203)
 # miscellaneous
 celadon = (172, 255, 175)
 peach = (255, 159, 127)
+brown = (128, 64, 0)
+dark_brown = (64, 32, 0)
+beige = (144, 99, 128)

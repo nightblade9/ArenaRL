@@ -61,32 +61,42 @@ class ArenaGenerator:
         
         # Well, technically, we just need names. They're functionally all the same.
         monster_names = ["slime", "locust", "giant", "wolf", "anaconda", "venomspider", "dragon", "thief", "hippogryph"]
-        monster_colours = [colors.red, colors.blue, colors.green, colors.yellow, colors.orange, colors.purple, colors.pink]
+        # generic colours for non-element beasties.
+        monster_colours = [colors.orange, colors.purple, colors.violet, colors.pink, colors.magenta, colors.amber]
+        elemental_colours = { "fire": colors.red, "ice": colors.blue, "lightning": colors.yellow, "earth": colors.green }
+        elements = [e for e in elemental_colours]
+        random.shuffle(elements)
 
         num_clusters = Game.instance.random.randint(*ArenaGenerator.NUM_CLUSTERS)
         monsters = random.sample(monster_names, num_clusters + 1) # +1 = boss
         colours = random.sample(monster_colours, num_clusters + 1)
-        
+        print(colours)
+
         for cluster_number in range(num_clusters):
 
+            is_elemental = random.choice([True, False]) == True            
             num_monsters = Game.instance.random.randint(*ArenaGenerator.CLUSTER_SIZE)
             monster_name = monsters.pop()
-            colour = colours.pop()
             difficulty = (cluster_number + 1) * self._area_map.floor_num
             
             attack = random.randint(difficulty * 2, difficulty * 5)
             defense = random.randint(difficulty, difficulty * 7)
             health = random.randint(12 * difficulty, 45 * difficulty)
-            print(f"Creating {num_monsters} {monster_name}: a={attack}, d={defense}, hp={health})")
+            colour = colours.pop()
+
+            element = elements.pop() if is_elemental else None
 
             for j in range(num_monsters):
-                self._create_monster(monster_name, colour, attack, defense, health)
+                self._create_monster(monster_name, colour, attack, defense, health, element, elemental_colours)
             
         # Boss is always someone to kill, so he should have very narrowly-ranged stats
         # TODO: what if he spawns next to you? Erm, well, you die, I guess.
-        self._create_monster(monsters.pop().capitalize(), colours.pop(), difficulty * 6, difficulty * 4, difficulty * 100)
+        is_elemental = random.choice([True, False]) == True
+        element = elements.pop() if is_elemental else None
+        
+        self._create_monster(monsters.pop().capitalize(), colours.pop(), difficulty * 6, difficulty * 4, difficulty * 100, element, elemental_colours)
 
-    def _create_monster(self, monster_name, colour, attack, defense, health):
+    def _create_monster(self, monster_name, colour, attack, defense, health, element, elemental_colours):
         data = AttrDict({ 
             "attack": attack,
             "defense": defense,
@@ -95,12 +105,15 @@ class ArenaGenerator:
         })
 
         x, y = self._area_map.get_random_walkable_tile() # TODO: place away from player's side? Nah.
-        monster = monster_factory.create_monster(data, x, y, colour, monster_name)
-        self._area_map.entities.append(monster)
-        
+        final_colour = elemental_colours[element] if element is not None else colour
+        final_name = f"{element} {monster_name}" if element is not None else monster_name
+        monster = monster_factory.create_monster(data, x, y, final_colour, final_name, character=monster_name[0])
+        print(f"Created a {final_name}")
+        monster.elemental = element
+        self._area_map.entities.append(monster)        
 
     def _make_barrel(self, x, y):
         data = AttrDict({ "health": 1, "defense": 0, "attack": 0, "xp": 0})
-        barrel = monster_factory.create_monster(data, x, y, colors.brass, "0", GameObject)
+        barrel = monster_factory.create_monster(data, x, y, colors.brass, "Barrel", "0", GameObject)
         Game.instance.ai_system.set(barrel, None)
         self._area_map.entities.append(barrel)
