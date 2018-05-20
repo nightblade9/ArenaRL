@@ -1,4 +1,5 @@
 import colors
+from elements import Element
 from model.components.skill import SkillComponent
 from model.components.xp import XPComponent
 from model.config import config
@@ -8,7 +9,7 @@ from game import Game
 from model.components.fighter import Fighter
 from model.entities.game_object import GameObject
 from model.key_binder import add_skill
-from elements import Element
+import random
 
 class Player(GameObject):
     def __init__(self):
@@ -18,6 +19,8 @@ class Player(GameObject):
         # Turn a name like "Sword" into the actual class instance
         weapon_name = data.startingWeapon
         weapon_init = getattr(model.weapons, weapon_name)
+        weapon_element = random.choice([Element.FIRE, Element.ICE, Element.LIGHTNING, Element.EARTH])
+        print(f"{weapon_element} {weapon_name}")
 
         Game.instance.fighter_system.set(
             self, Fighter(
@@ -25,7 +28,7 @@ class Player(GameObject):
                 hp=data.startingHealth,
                 defense=data.startingDefense,
                 damage=data.startingDamage,
-                weapon=weapon_init(self, Element.FIRE),
+                weapon=weapon_init(self, weapon_element),
                 death_function=player_death
             )
         )
