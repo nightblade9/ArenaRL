@@ -51,9 +51,25 @@ class ArenaGenerator:
             center_pillar_y = int(self._area_map.height / 2)
             for x in range(center_pillar_x - 1, center_pillar_x + 2):
                 for y in range(center_pillar_y - 1, center_pillar_y + 2):
-                    self._make_barrel(x, y)
+                    self._make_barrel(x, y)        
         
-        self._generate_monsters()
+        self._generate_stairs() # also places player
+        #self._generate_monsters()
+
+    def _generate_stairs(self):
+        # Edge case: if floor num = 1, set player X/Y. Otherwise, it's set in main.py
+        if self._area_map.floor_num == 1:
+            print("B1, randomizing locations")
+            Game.instance.player.y = int(Game.instance.area_map.height / 2)
+            Game.instance.player.x = 5 if random.choice(['left', 'right']) == 'left' else Game.instance.area_map.width - 5        
+
+        stairs_x = self._area_map.width - Game.instance.player.x
+        stairs_y = Game.instance.player.y
+        print(f"Players are at {Game.instance.player.x}, {Game.instance.player.y}")
+        print(f"Stairs are at {stairs_x}, {stairs_y}")
+        stairs_tile = self._area_map.tiles[stairs_x][stairs_y]
+        stairs_tile.convert_to_ground(character='>', colour=colors.white, dark_colour=colors.grey)
+        self._area_map.next_floor_stairs = (stairs_x, stairs_y)
 
     def _generate_monsters(self):
         # Monster generation is complicated. To keep it simple, we have a pool of generic monsters,

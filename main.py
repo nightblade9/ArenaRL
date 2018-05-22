@@ -47,16 +47,6 @@ def new_game():
 
     Game.instance.floor = Game.instance.area_map
     Game.instance.event_bus = Game.instance.event_bus
-
-    #Game.instance.area_map.place_on_random_ground(Game.instance.player)
-    Game.instance.player.y = int(Game.instance.area_map.height / 2)
-    Game.instance.player.x = 5 if random.choice(['left', 'right']) == 'left' else Game.instance.area_map.width - 5
-
-    stairs_x = Game.instance.area_map.width - Game.instance.player.x
-    stairs_y = Game.instance.player.y
-    stairs_tile = Game.instance.area_map.tiles[stairs_x][stairs_y]
-    stairs_tile.convert_to_ground(character='>', colour=colors.white, dark_colour=colors.grey)
-    Game.instance.area_map.next_floor_stairs = (stairs_x, stairs_y)
     
     if config.data.stallion.enabled:
         Game.instance.area_map.place_around(Game.instance.stallion, Game.instance.player.x, Game.instance.player.y)

@@ -29,18 +29,23 @@ class UpdateManager:
 
     def base_update(self):
         if self.game.renderer.recompute_fov:
-            if (
-                ((self.game.player.x, self.game.player.y) == self.game.area_map.next_floor_stairs) or
-                ((self.game.player.x, self.game.player.y) == self.game.area_map.previous_floor_stairs)
-            ):
-                self.switch_floor()
+            go_to_next_floor = ((self.game.player.x, self.game.player.y) == self.game.area_map.next_floor_stairs)
+            go_to_previous_floor = ((self.game.player.x, self.game.player.y) == self.game.area_map.previous_floor_stairs)
+            
+            if go_to_next_floor or go_to_previous_floor:
+                self.switch_floor(go_to_next_floor)
         self.game.renderer.render()
 
-    def switch_floor(self):
+    def switch_floor(self, go_to_next_floor):
         self.game.area_map.entities = []        
         update_manager.generate_floor()
-        self.game.event_bus = EventBus()        
-        self.place_player_in_floor(self.game.area_map.next_floor_stairs)
+        self.game.event_bus = EventBus()
+        # TODO: this is handled case-by-case by the dungeon generator; arena generator
+        # sets this but other generators don't. Come up with a more generic way to handle this.
+        #self.place_player_in_floor(self.game.area_map.next_floor_stairs)
+        if go_to_next_floor:
+            # ya'ne, not going to the previous floor
+            print("DESCEND!")
         self.refresh_renderer()
 
     def place_player_in_floor(self, tile_to_spawn_player_around):

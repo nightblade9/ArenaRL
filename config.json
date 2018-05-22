@@ -3,6 +3,7 @@
     "fullscreen": false,
     "mapType": "arena",  // "forest" or "dungeon"
     "numFloors": 5,
+
     "features": {
         "seeAllTiles": true,
         "omniSight": true,
@@ -13,8 +14,10 @@
         "bowCrits": true,
         "bowCritsStack": true,
         "limitedArrows": true,
-        "horseIsMountable": true
+        "horseIsMountable": true,
+        "handicapOnFloorDescend": true
     },
+
     "player": {
         "startingHealth": 30,
         "startingDefense": 2,
