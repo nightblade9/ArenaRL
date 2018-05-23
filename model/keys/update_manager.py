@@ -1,8 +1,11 @@
 from game import Game
+import handicaps
 import importlib
+import inspect
 from model.config import config
 from model.event.event_bus import EventBus
 from model.keys import update_manager
+import random
 
 class UpdateManager:
     def __init__(self, game):
@@ -45,7 +48,15 @@ class UpdateManager:
         #self.place_player_in_floor(self.game.area_map.next_floor_stairs)
         if go_to_next_floor and config.data.features.handicapOnFloorDescend:
             # ya'ne, not going to the previous floor
-            print("DESCEND! HANDICAP!")
+            # Pick a random method from the handicaps module. Call it with player as an arg.
+            # That's the handicap that we're applying this floor.
+            handicap_methods = [x for x in inspect.getmembers(handicaps) if inspect.isfunction(x[1])]
+            handicap_method_names = [x[0] for x in handicap_methods]
+            random.shuffle(handicap_method_names)
+            
+            handicap_method = getattr(handicaps, handicap_method_names.pop())
+            handicap_method(Game.instance.player)
+
         self.refresh_renderer()
 
     def place_player_in_floor(self, tile_to_spawn_player_around):

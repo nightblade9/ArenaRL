@@ -98,7 +98,7 @@ class MapRenderer:
         self._ui_adapter.panel.draw_str(11, 1, "LEVEL {}".format(xp_component.level))
         self._ui_adapter.panel.draw_str(10, 2, "HP: {}/{}".format(player_fighter.hp, player_fighter.max_hp))
         self._ui_adapter.panel.draw_str(10, 3, "SP: {}/{}".format(skill_component.skill_points,
-                                                                  config.data.player.maxSkillPoints))
+                                                                  skill_component.max_skill_points))
 
         self._ui_adapter.panel.draw_str(11, 4, "FLOOR {}".format(Game.instance.area_map.floor_num))
 
