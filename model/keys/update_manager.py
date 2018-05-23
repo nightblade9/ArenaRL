@@ -43,9 +43,9 @@ class UpdateManager:
         # TODO: this is handled case-by-case by the dungeon generator; arena generator
         # sets this but other generators don't. Come up with a more generic way to handle this.
         #self.place_player_in_floor(self.game.area_map.next_floor_stairs)
-        if go_to_next_floor:
+        if go_to_next_floor and config.data.features.handicapOnFloorDescend:
             # ya'ne, not going to the previous floor
-            print("DESCEND!")
+            print("DESCEND! HANDICAP!")
         self.refresh_renderer()
 
     def place_player_in_floor(self, tile_to_spawn_player_around):

@@ -6,7 +6,7 @@
 
     "features": {
         "seeAllTiles": true,
-        "omniSight": true,
+        "omniSight": false,
         "swordStuns": true,
         "stunsStack": true,
         "hammerKnocksBack": true,
