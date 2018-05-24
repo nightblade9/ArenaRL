@@ -41,7 +41,7 @@ class MapRenderer:
                     self._player.x, self._player.y,
                     Game.instance.area_map.is_visible_tile,
                     FOV_ALGO,
-                    config.data.player.lightRadius,
+                    Game.instance.player.sight_radius,
                     FOV_LIGHT_WALLS
                 ),
                 Game.instance.area_map.is_on_map
@@ -64,7 +64,7 @@ class MapRenderer:
             e.draw()
 
         if Game.instance.draw_bowsight:
-            Game.instance.target = closest_monster(Game, config.data.player.lightRadius) if Game.instance.auto_target else None
+            Game.instance.target = closest_monster(Game, Game.instance.player.sight_radius) if Game.instance.auto_target else None
             x2, y2 = (Game.instance.target.x, Game.instance.target.y) if Game.instance.target is not None else Game.instance.mouse_coord
 
             x1, y1 = self._player.x, self._player.y

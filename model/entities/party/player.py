@@ -16,11 +16,12 @@ class Player(GameObject):
         data = config.data.player
         super().__init__(0, 0, '@', 'player', colors.white, blocks=True)
 
+        self.sight_radius = data.lightRadius
+
         # Turn a name like "Sword" into the actual class instance
         weapon_name = data.startingWeapon
         weapon_init = getattr(model.weapons, weapon_name)
         weapon_element = random.choice([Element.FIRE, Element.ICE, Element.LIGHTNING, Element.EARTH])
-        print(f"{weapon_element} {weapon_name}")
 
         Game.instance.fighter_system.set(
             self, Fighter(

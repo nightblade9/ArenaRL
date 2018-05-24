@@ -1,9 +1,13 @@
 from game import Game
 from model import key_binder
 
+BLIND_SIGHT_RADIUS = 3
+
 def half_health(player):
     fighter = Game.instance.fighter_system.get(player)
     fighter.max_hp = int(fighter.max_hp / 2)
+    if fighter.max_hp == 0:
+        fighter.max_hp = 1
     fighter.hp = min(fighter.hp, fighter.max_hp)
     print(f"Halved player max HP to {fighter.max_hp}")
 
@@ -20,3 +24,7 @@ def disable_random_skill(player):
     # key is name, value is a dictionary of key => callback
     Game.instance.keybinder.suspend_keybind(skill_key)
     print(f"Disabled a random skill {skill_name} ({skill_key})!")
+
+def blind(player):
+    player.sight_radius = BLIND_SIGHT_RADIUS
+    print(f"You are struck by blindness!")
