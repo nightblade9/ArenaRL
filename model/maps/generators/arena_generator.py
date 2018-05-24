@@ -59,14 +59,11 @@ class ArenaGenerator:
     def _generate_stairs(self):
         # Edge case: if floor num = 1, set player X/Y. Otherwise, it's set in main.py
         if self._area_map.floor_num == 1:
-            print("B1, randomizing locations")
             Game.instance.player.y = int(Game.instance.area_map.height / 2)
             Game.instance.player.x = 5 if random.choice(['left', 'right']) == 'left' else Game.instance.area_map.width - 5        
 
         stairs_x = self._area_map.width - Game.instance.player.x
         stairs_y = Game.instance.player.y
-        print(f"Players are at {Game.instance.player.x}, {Game.instance.player.y}")
-        print(f"Stairs are at {stairs_x}, {stairs_y}")
         stairs_tile = self._area_map.tiles[stairs_x][stairs_y]
         stairs_tile.convert_to_ground(character='>', colour=colors.white, dark_colour=colors.grey)
         self._area_map.next_floor_stairs = (stairs_x, stairs_y)
