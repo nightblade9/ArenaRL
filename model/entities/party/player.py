@@ -29,7 +29,7 @@ class Player(GameObject):
                 hp=data.startingHealth,
                 defense=data.startingDefense,
                 damage=data.startingDamage,
-                weapon=weapon_init(self, weapon_element),
+                weapon=weapon_init(self, f"{weapon_element} {weapon_name}", weapon_element),
                 death_function=player_death
             )
         )

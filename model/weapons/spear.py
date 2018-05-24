@@ -5,6 +5,9 @@ from model.config import config
 
 
 class Spear(Weapon):
+    def __init__(self, owner, name, elemental):
+        super().__init__(owner, name, elemental)
+        
     def attack(self, target, game, **kwargs):
         if not kwargs.get('recurse', True):
             return

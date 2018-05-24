@@ -12,8 +12,8 @@ class Sword(Weapon):
     effects on top of the combat algorithms. (This is true of all weapons.)
     """
 
-    def __init__(self, owner, elemental):
-        super().__init__(owner, elemental)
+    def __init__(self, owner, name, elemental):
+        super().__init__(owner, name, elemental)
 
     def attack(self, target, game, **kwargs):
         if config.data.features.swordStuns and game.ai_system.has(target):

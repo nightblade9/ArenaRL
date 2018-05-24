@@ -28,3 +28,14 @@ def disable_random_skill(player):
 def blind(player):
     player.sight_radius = BLIND_SIGHT_RADIUS
     print(f"You are struck by blindness!")
+
+def break_weapon(player):
+    # Break if not broken. Otherwise, ya'ne, player feels like BONUS, nothing went
+    # bad in this descent :)
+    player_fighter = Game.instance.fighter_system.get(player)
+    if player_fighter.weapon:
+        name = player_fighter.weapon.name
+        player_fighter.weapon = None
+        print(f"Your {name} breaks!")
+    else:
+        print("Your weapon is already broken.")

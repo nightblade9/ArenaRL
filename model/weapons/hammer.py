@@ -8,6 +8,9 @@ from model.weapons.base import Weapon
 
 
 class Hammer(Weapon):
+    def __init__(self, owner, name, elemental):
+        super().__init__(owner, name, elemental)
+        
     def attack(self, target, game, **kwargs):
         if config.data.features.hammerKnocksBack and game.ai_system.has(target):
             # The directional vector of knockback is (defender - attacker)

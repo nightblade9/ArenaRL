@@ -8,3 +8,5 @@ class Bow(Weapon):
 
     Used to tell if we can fire arrows.
     """
+    def __init__(self, owner, name, elemental):
+        super().__init__(owner, name, elemental)
