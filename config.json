@@ -106,7 +106,7 @@
     },
     "enemies": {
         "arrowDropsOnKill": 3,
-        "randomlyWalkWhenOutOfSight": true,
+        "randomlyWalkWhenOutOfSight": false,
         "fire": {
           "damage": 5,
           "spreadProbability": 5,
