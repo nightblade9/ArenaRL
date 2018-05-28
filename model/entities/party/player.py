@@ -21,7 +21,7 @@ class Player(GameObject):
         # Turn a name like "Sword" into the actual class instance
         weapon_name = data.startingWeapon
         weapon_init = getattr(model.weapons, weapon_name)
-        weapon_element = random.choice([Element.FIRE, Element.ICE, Element.LIGHTNING, Element.EARTH])
+        weapon_element = random.choice([Element.FIRE, Element.ICE, Element.EARTH, Element.LIGHTNING])
 
         Game.instance.fighter_system.set(
             self, Fighter(
