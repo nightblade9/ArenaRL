@@ -54,7 +54,7 @@ class ArenaGenerator:
                     self._make_barrel(x, y)        
         
         self._generate_stairs() # also places player
-        #self._generate_monsters()
+        self._generate_monsters()
 
     def _generate_stairs(self):
         # Edge case: if floor num = 1, set player X/Y. Otherwise, it's set in main.py
