@@ -15,4 +15,6 @@ class FrostBomb:
                         and Game.instance.fighter_system.get(e).hostile)
                 )
                 for entity in entities:
-                    ai_system.get(entity).temporarily_switch_to(FrozenMonster(entity, config.turnsToThaw))
+                    ai = ai_system.get(entity)
+                    if ai is not None:
+                        ai.temporarily_switch_to(FrozenMonster(entity, config.turnsToThaw))

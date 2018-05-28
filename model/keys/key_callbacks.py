@@ -6,6 +6,7 @@ from model.helper_functions.message import message
 from model.helper_functions.skills import can_use_skill
 from model.keys.decorators import in_game, skill, horse_skill
 from model.keys.util import map_movement_callback
+from model.skills.earthstab import EarthStab
 from model.skills.frostbomb import FrostBomb
 from model.skills.lance_charge import LanceCharge
 from model.skills.omnislash import OmniSlash
@@ -176,6 +177,11 @@ def whirlwind_callback(event):
     if config.data.skills.whirlwind.enabled:
         Whirlwind.process(Game.instance.player, config.data.skills.whirlwind.radius, Game.instance.area_map)
 
+@skill(cost=config.data.skills.earthstab.cost)
+@in_game(pass_turn=True)
+def earthstab_callback(event):
+    if config.data.skills.earthstab.enabled:
+        EarthStab.process(Game.instance.player, config.data.skills.earthstab.range, Game.instance.area_map)
 
 @in_game(pass_turn=False)
 def omnislash_callback(event):
@@ -210,7 +216,6 @@ def frost_bomb_callback(event):
     if config.data.skills.frostbomb.enabled:
         FrostBomb.process(Game.instance.area_map, Game.instance.player, Game.instance.ai_system, config.data.skills.frostbomb)
         message("A cold wind gushes forward as enemies around you freeze!", colors.cyan)
-
 
 @horse_skill(cost=0)
 @in_game(pass_turn=False)

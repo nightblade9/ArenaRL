@@ -56,6 +56,11 @@
             "radius": 2,
             "cost": 15
         },
+        "earthstab": {
+            "enabled": true,
+            "cost": 20,
+            "range": 3 // hits N tiles in four directions
+        },
         "frostbomb": {
             "enabled": true,
             "radius": 5,
@@ -140,6 +145,7 @@
         "3": "whirlwind",
         "4": "ruqya",
         "5": "frostbomb",
-        "6": "lanceCharge"
+        "6": "earthstab",
+        "7": "lanceCharge"
     }
 }

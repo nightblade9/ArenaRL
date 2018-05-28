@@ -60,8 +60,8 @@ def new_game():
     # a warm welcoming message!
     message('Another brave knight yearns to bring peace to the land.', colors.red)
 
-    # Gain four levels
-    Game.instance.xp_system.get(Game.instance.player).gain_xp(40 + 80 + 160 + 320)
+    # Gain five levels
+    Game.instance.xp_system.get(Game.instance.player).gain_xp(40 + 80 + 160 + 320 + 640)
 
 
 def play_game():
