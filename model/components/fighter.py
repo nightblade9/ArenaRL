@@ -23,10 +23,13 @@ class Fighter(Component):
         self.hostile = hostile
         self.take_damage_strategy = self.default_take_damage_strategy
 
-    def take_damage(self, damage):
+    def take_damage(self, damage, attack_elemental=None):
         # apply damage if possible
+        if attack_elemental is not None:
+            damage = elements.apply_elemental_damage(attack_elemental, self.owner, damage)
+
         if damage > 0:
-            self.take_damage_strategy(damage)
+            self.take_damage_strategy(damage)        
 
     def default_take_damage_strategy(self, damage):
         self.hp -= damage
@@ -34,6 +37,7 @@ class Fighter(Component):
         if self.hp <= 0:
             self.die()
 
+    # Target = GameObject
     def attack(self, target, damage_multiplier=1, is_critical=False, *, recurse=True):
         # a simple formula for attack damage
         target_fighter = Game.instance.fighter_system.get(target)
@@ -41,7 +45,9 @@ class Fighter(Component):
 
         msg = f'{self.owner.name.capitalize()} attacks {target.name}'
 
-        damage = elements.apply_elemental_damage(self, target, damage)
+        # Uber hack to apply element damage
+        my_elemental = self.weapon.elemental if self.weapon is not None and self.weapon.elemental is not None else None
+        damage = elements.apply_elemental_damage(my_elemental, target, damage)
         
         if damage > 0:
             # make the target take some damage
@@ -57,6 +63,7 @@ class Fighter(Component):
             self.weapon.attack(target, Game.instance, recurse=recurse)
 
     def calculate_damage(self, damage_multiplier, target_fighter):
+        print(f"CALC dm={damage_multiplier} tf={target_fighter} TFD={target_fighter.defense} self.d+{self.damage}")
         return int(self.damage * damage_multiplier) - target_fighter.defense
 
     def heal(self, amount):

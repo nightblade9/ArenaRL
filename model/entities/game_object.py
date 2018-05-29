@@ -15,6 +15,7 @@ class GameObject:
         self.color = color
         self.name = name
         self.blocks = blocks
+        self.elemental = None
 
     def move(self, dx, dy):
         # move by the given amount, if the destination is not blocked

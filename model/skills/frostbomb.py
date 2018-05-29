@@ -1,6 +1,6 @@
 from game import Game
 from model.components.ai.monster import FrozenMonster
-
+from elements import Element
 
 class FrostBomb:
     @staticmethod
@@ -18,3 +18,9 @@ class FrostBomb:
                     ai = ai_system.get(entity)
                     if ai is not None:
                         ai.temporarily_switch_to(FrozenMonster(entity, config.turnsToThaw))
+                        player_fighter = Game.instance.fighter_system.get(player)
+                        target_fighter = Game.instance.fighter_system.get(entity)
+                        # attacks and applies elemental damage
+                        damage = player_fighter.calculate_damage(1, target_fighter)
+                        target_fighter.take_damage(damage, Element.ICE)
+

@@ -8,13 +8,11 @@ class Element(Enum):
     EARTH = 3
     LIGHTNING = 4
     
-def apply_elemental_damage(attacker, target, base_damage):
+def apply_elemental_damage(attack_elemental, target, base_damage):
     """Uber hack to apply element damage"""
-    fighter = Game.instance.fighter_system.get(attacker.owner)
-    my_weapon = fighter.weapon if fighter is not None else None
     target_elemental = getattr(target, "elemental", None)
-    if my_weapon is not None and my_weapon.elemental is not None and target_elemental is not None:
-        damage_multipler = _get_multiplier(my_weapon.elemental, target_elemental)
+    if attack_elemental is not None:
+        damage_multipler = _get_multiplier(attack_elemental, target_elemental)
         return base_damage * damage_multipler
     else:
         return base_damage
