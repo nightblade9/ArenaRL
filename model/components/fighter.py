@@ -63,7 +63,6 @@ class Fighter(Component):
             self.weapon.attack(target, Game.instance, recurse=recurse)
 
     def calculate_damage(self, damage_multiplier, target_fighter):
-        print(f"CALC dm={damage_multiplier} tf={target_fighter} TFD={target_fighter.defense} self.d+{self.damage}")
         return int(self.damage * damage_multiplier) - target_fighter.defense
 
     def heal(self, amount):

@@ -18,6 +18,18 @@
         "handicapOnFloorDescend": true
     },
 
+    "handicaps": {
+        "allowHealthDecrease": false,
+        "allowSpDecrease": false,
+        "allowDisablingRandomSkill": true,
+        "allowBlindness": false,
+        "allowWeaponBreakage": false,
+
+        "healthDecreasePercent": 0.3, // 0.3 => decrease by 30%
+        "skillPointsDecreasePercent": 0.3,
+        "blindRadiusDecrease": 1 // decrease radius by one tile        
+    },
+
     "player": {
         "startingHealth": 30,
         "startingDefense": 2,

@@ -50,11 +50,12 @@ class UpdateManager:
             # ya'ne, not going to the previous floor
             # Pick a random method from the handicaps module. Call it with player as an arg.
             # That's the handicap that we're applying this floor.
+            # Returns a tuple of (name, function) for each method.
             handicap_methods = [x for x in inspect.getmembers(handicaps) if inspect.isfunction(x[1])]
-            handicap_method_names = [x[0] for x in handicap_methods]
-            random.shuffle(handicap_method_names)
-            
-            handicap_method = getattr(handicaps, handicap_method_names.pop())
+            random.shuffle(handicap_methods)
+
+            handicap_method_tuple = handicap_methods.pop() # tuple of (name, method)
+            handicap_method = handicap_method_tuple[1] # method/function
             handicap_method(Game.instance.player)
 
         self.refresh_renderer()
