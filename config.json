@@ -21,7 +21,7 @@
     "player": {
         "startingHealth": 30,
         "startingDefense": 2,
-        "startingDamage": 6,
+        "startingDamage": 60,
 
         "maxSkillPoints": 50,
         "skillPointsPerTurn": 2,
