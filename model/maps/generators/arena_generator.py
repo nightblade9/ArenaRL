@@ -4,9 +4,11 @@ from elements import Element
 from game import Game
 import math
 from model.rect import Rect
+from model.config import config
 from model.maps.generators import map_generator
 from model.factories import monster_factory
 from model.entities.game_object import GameObject
+from model.entities.traps.trap import Trap
 import random
 
 class ArenaGenerator:
@@ -51,10 +53,16 @@ class ArenaGenerator:
             center_pillar_y = int(self._area_map.height / 2)
             for x in range(center_pillar_x - 1, center_pillar_x + 2):
                 for y in range(center_pillar_y - 1, center_pillar_y + 2):
-                    self._make_barrel(x, y)        
+                    self._make_barrel(x, y)
+                    
+        # Turn the center of the map into a death-trap of traps (pun not intended)
+        for center_x in (int(self._area_map.width / 3), int(self._area_map.width * 2 / 3)):
+            start_y = int((self._area_map.height - config.data.traps.pillarHeight) / 2)
+            for y in range(start_y, start_y + config.data.traps.pillarHeight):
+                self._make_trap(center_x, y)
         
         self._generate_stairs() # also places player
-        self._generate_monsters()
+        #self._generate_monsters()
 
     def _generate_stairs(self):
         # Edge case: if floor num = 1, set player X/Y. Otherwise, it's set in main.py
@@ -135,3 +143,7 @@ class ArenaGenerator:
         barrel = monster_factory.create_monster(data, x, y, colors.brass, "Barrel", "0", GameObject)
         Game.instance.ai_system.set(barrel, None)
         self._area_map.entities.append(barrel)
+
+    def _make_trap(self, x, y):
+        t = Trap(x, y)
+        self._area_map.entities.append(t)
