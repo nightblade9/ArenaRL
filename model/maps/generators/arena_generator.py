@@ -8,7 +8,7 @@ from model.config import config
 from model.maps.generators import map_generator
 from model.factories import monster_factory
 from model.entities.game_object import GameObject
-from model.entities.traps.trap import Trap
+from model.entities.traps.poison_trap import PoisonTrap
 import random
 
 class ArenaGenerator:
@@ -145,5 +145,5 @@ class ArenaGenerator:
         self._area_map.entities.append(barrel)
 
     def _make_trap(self, x, y):
-        t = Trap(x, y)
+        t = PoisonTrap(x, y)
         self._area_map.entities.append(t)
