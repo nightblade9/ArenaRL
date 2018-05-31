@@ -131,7 +131,7 @@ class ArenaGenerator:
             "xp": (attack + defense) * health
         })
 
-        x, y = self._area_map.get_random_walkable_tile() # TODO: place away from player's side? Nah.
+        x, y = self._area_map.get_random_walkable_tile() # May spawn next to the player. That's ok.
         final_colour = elemental_colours[element] if element is not None else colour
         final_name = f"{element} {monster_name}" if element is not None else monster_name
         monster = monster_factory.create_monster(data, x, y, final_colour, final_name, character=monster_name[0])
