@@ -55,11 +55,7 @@ class ArenaGenerator:
                 for y in range(center_pillar_y - 1, center_pillar_y + 2):
                     self._make_barrel(x, y)
                     
-        # Turn the center of the map into a death-trap of traps (pun not intended)
-        for center_x in (int(self._area_map.width / 3), int(self._area_map.width * 2 / 3)):
-            start_y = int((self._area_map.height - config.data.traps.pillarHeight) / 2)
-            for y in range(start_y, start_y + config.data.traps.pillarHeight):
-                self._make_trap(center_x, y)
+        self._generate_traps()
         
         self._generate_stairs() # also places player
         #self._generate_monsters()
@@ -143,6 +139,45 @@ class ArenaGenerator:
         barrel = monster_factory.create_monster(data, x, y, colors.brass, "Barrel", "0", GameObject)
         Game.instance.ai_system.set(barrel, None)
         self._area_map.entities.append(barrel)
+
+    def _generate_traps(self):
+        map_width = self._area_map.width
+        map_height = self._area_map.height
+
+        # ranges from (left, top) to (center) to (bottom, right), 3x3 options
+        valid_locations = [(int(x), int(y))
+            for x in [map_width / 4, map_width / 2, 3 * map_width / 4]
+            for y in [map_height / 4, map_height / 2, 3 * map_height / 4]]
+        
+        arrangements = ['square', 'checkerboard', 'row', 'column']
+
+        trap_locations = random.choices(valid_locations, k=3)        
+
+        for center_x, center_y in trap_locations:
+            arrangement = random.choice(arrangements)
+            self._lay_traps(center_x, center_y, arrangement)
+        
+
+    def _lay_traps(self, center_x, center_y, arrangement):
+        print(arrangement)
+        trap_size = config.data.traps.size
+        half_size = int(trap_size / 2)
+        tiles = []
+
+        if arrangement == "square" or arrangement == "checkerboard":
+            tiles = [(x, y) for x in range(center_x - half_size, center_x + half_size) for y in range (center_y - half_size, center_y + half_size)]
+        elif arrangement == "row":
+            tiles = [(x, center_y) for x in range(center_x - half_size, center_x + half_size)]
+        elif arrangement == "column":
+            tiles = [(center_x, y) for y in range(center_y - half_size, center_y + half_size)]
+        
+        if arrangement == "checkerboard":
+            # Trim half. Even sized checkerboards tile regularly, so instead of looking at just
+            # the x or y, we check if the sum of both is odd; that gives us alternating tiles.
+            tiles = [t for t in tiles if (t[0] + t[1]) % 2 == 1]
+
+        for tile in tiles:
+            self._make_trap(*tile)
 
     def _make_trap(self, x, y):
         t = PoisonTrap(x, y)

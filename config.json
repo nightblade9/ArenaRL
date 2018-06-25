@@ -22,7 +22,7 @@
 
     "traps": {
         "oscillationTurns": 3, // 3 turns on, then 3 turns off
-        "pillarHeight": 10,
+        "size": 5,
         "stepOnDamage": 5, // 10 damage for stepping on a live trap
         "poisonDamage": 3, // 3 damage per turn
         "poisonTurns": 3 // last 3 turns
